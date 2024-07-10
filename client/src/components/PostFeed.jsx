@@ -2,6 +2,7 @@ import React, { useEffect,useState } from 'react'
 import {usePost} from '../hooks/usePost';
 import { useStore } from '../context/Store';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 const PostFeed = () => {
     const apiUrl = import.meta.env.VITE_API_URL
     const {user,logout} = useStore();
@@ -102,11 +103,14 @@ const PostFeed = () => {
                         
                     ))}
                 </ul>
+                <Link to='/addpost'>Create new post</Link>
                 <button onClick={logout}>Logout</button>
                 </>
             ) : (
                 <>
                 <p>No posts yet</p>
+                
+                <Link to='/addpost'>Create new post</Link>
                 <button onClick={logout}>Logout</button>
                 </>
             )}
