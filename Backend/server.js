@@ -9,10 +9,7 @@ connectDB();
 const routes = require("./routes");
 app.use(express.json());
 app.use("/uploads",express.static(path.join(__dirname, "uploads")));
-app.use(cors({
-    origin: "https://afzal-travel-blog.vercel.app/",
-
-}));
+app.use(cors());
 app.use("/api",routes);
 app.use("/",(req,res)=>{
 res.send("SERVER RUNNING ")
