@@ -9,4 +9,5 @@ router.get('/getallpost',authMiddleware,postController.getAllPosts);
 router.delete('/delete/:id',authMiddleware,postController.deletepost);
 router.post('/like',authMiddleware, postController.likePost);
 router.post('/comment',authMiddleware, postController.addComment);
+router.put('/editpost/:id',authMiddleware, upload.single('image'), postController.editPost);
 module.exports = router;

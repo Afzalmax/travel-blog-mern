@@ -5,17 +5,22 @@ const tokenGenerator = require('../utils/tokenGenerator');
 
 exports.createUser = async (req, res) => {
     try {
-        const { username, password } = req.body;
-
-        const existingUser = await User.findOne({ username });
+        const { username, password ,email } = req.body;
+        console.log(username, password, email);
+        const existingUser = await User.findOne({ username  });
         if (existingUser) {
             return res.status(400).json({ message: 'Username already exists' });
+        }
+
+        const existingEmail = await User.findOne({ email });
+        if (existingEmail) {
+            return res.status(400).json({ message: 'Email already exists' });
         }
 
         // Hash the password before saving
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log('Hashed Password:', hashedPassword);  // Log the hashed password for debugging
-        const user = new User({ username, password: hashedPassword });
+        const user = new User({ username,email, password: hashedPassword });
         await user.save();
         res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
@@ -68,12 +73,12 @@ exports.getUser = async (req, res) => {
 }
 exports.getProfile = async (req, res) => {
     try {
-        const user = await user.findById(req.user.id);
-        if (!user) {
+        const userProfile = await User.findById(req.user.id);
+        if (!userProfile) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const posts = await post.find({ CreatedBy: req.user.id });
-        res.status(200).json({ posts });
+        const userPosts = await post.find({ CreatedBy: req.user.id });
+        res.status(200).json({ profile: userProfile, posts: userPosts });
     } catch (error) {
         console.error('Error getting profile:', error.message);
         res.status(500).json({ message: error.message });

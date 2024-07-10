@@ -1,33 +1,32 @@
-import React, { useEffect } from 'react'
-import { useStore } from './context/Store'
-import Login from './components/Login';
+import React,{useEffect} from 'react'
+import {BrowserRouter as Router, Routes, Route, useNavigate} from 'react-router-dom'
+import { useStore } from './context/Store';
 import Register from './components/Register';
-import CreatePost from './components/PostForm';
+import Login from './components/Login';
 import PostFeed from './components/PostFeed';
+import Navbar from './components/Navbar';
 import Profile from './components/Profile';
+import PostForm from './components/PostForm';
 
 const App = () => {
-  const {token,logout,user} = useStore();
-  
+  const {token} = useStore();
+  const navigate = useNavigate();
+  useEffect(()=>{ 
+    if(!token) navigate('/login');
+  },[]);
+ 
   return (
-    <div>
-      {
-        token ? (
-          <>
-          <h1>welcome {user}</h1>
-          <Profile/>
-         <CreatePost/>
-         <PostFeed/>
-          <button onClick={logout}>logout</button>
-          </>):(
-            <>
-            <Login/>
-            <Register/>
-
-            </>
-          )
-      }
-    </div>
+    <>
+    <Navbar/>
+      <Routes>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/" element={<PostFeed/>}/>
+        <Route path='/register' element={<Register/>}/>
+        <Route path='/profile' element={<Profile/>}/>
+        <Route path='/addpost' element={<PostForm/>}/>
+      </Routes>
+   
+    </>
   )
 }
 

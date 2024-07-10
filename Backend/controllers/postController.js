@@ -31,11 +31,56 @@ exports.getAllPosts = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+exports.editPost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, description } = req.body;
+
+        const Post = await post.findById(id);
+        if (!Post) {
+            return res.status(404).json({ message: 'Post not found' });
+        }
+
+        if (Post.CreatedBy.toString() !== req.user.id) {
+            return res.status(401).json({ message: 'Unauthorized to edit this post' });
+        }
+
+        // Check each field and update or delete it if provided
+        if (title !== undefined) {
+            if (title === "") {
+                Post.title = undefined;
+            } else {
+                Post.title = title;
+            }
+        }
+
+        if (description !== undefined) {
+            if (description === "") {
+                Post.description = undefined;
+            } else {
+                Post.description = description;
+            }
+        }
+
+        if (req.file) {
+            // If a new image is uploaded, set the new image path
+            Post.image = req.file.path;
+        }
+
+        await Post.save();
+        res.status(200).json({ message: 'Post updated successfully' });
+    } catch (error) {
+        console.error('Error editing post:', error.message);
+        res.status(500).json({ message: error.message });
+    }
+}
 
 exports.deletepost = async (req, res) => {
     try {
         const { id } = req.params;
         const Post = await post.findById(id);
+
+
         if(!Post) {
             return res.status(404).json({ message: 'Post not found' });
         }
@@ -99,3 +144,4 @@ exports.addComment = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+   
