@@ -22,6 +22,8 @@ const UserProfile = () => {
     const [editDescription, setEditDescription] = useState('');
     const [editImage, setEditImage] = useState(null);
     const {getPosts} = usePost();
+    const [isloading, setIsloading] = useState(true);
+
 
     const fetchProfile = async () => {
         try {
@@ -32,6 +34,7 @@ const UserProfile = () => {
             });
             setProfile(response.data.profile);
             setPosts(response.data.posts);
+            setIsloading(false);
         } catch (err) {
             setError(err.response ? err.response.data.message : 'An error occurred');
         }
@@ -95,13 +98,6 @@ const UserProfile = () => {
         
        
        }, []);
-
-    if (!profile) {
-        return <div>Loading...</div>;
-    }
-
-   
-    
     const handleLike = async (postId) => {
       try{
       const response = await axios.post(apiUrl+'/api/post/like', { postId}, {
@@ -123,8 +119,15 @@ const UserProfile = () => {
     
     setPosts(posts.map(post => post._id === postId ? { ...post, comments: response.data.comments } : post))
   };
-    return (
-        <div>
+    return (<>
+    {
+        isloading ? (
+        <>
+        <h1 className='flex justify-center items-center text-2xl font-bold text-gray-900 dark:text-white'><span></span>Loading...</h1>
+        </>
+        )
+        : (
+            <div>
             <h1 className='flex justify-center items-center text-2xl font-bold text-gray-900 dark:text-white'><span></span>{profile.username}'s Profile</h1>
             <h2 className='mt-2 flex justify-center items-center text-xl'><span></span>Email: {profile.email}</h2>
             <p className='flex justify-center items-center'><span></span>Joined: {new Date(profile.createdAt).toLocaleDateString()}</p>
@@ -216,7 +219,9 @@ const UserProfile = () => {
 
                 <Toaster position="top-center" reverseOrder={false} />
             </div>
-        </div>
+        </div>)
+    }
+    </>
     );
 };
 
