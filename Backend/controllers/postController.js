@@ -106,18 +106,26 @@ exports.deletepost = async (req, res) => {
 exports.likePost = async (req, res) => {
     try {
         const { postId } = req.body;
-        
+        const userId = req.user.id;
+
         const Post = await post.findById(postId);
-        if (!post) {
+        if (!Post) {
             return res.status(404).json({ message: 'Post not found' });
         }
-        if (Post.likes.includes(req.user.id)) {
-            Post.likes = Post.likes.filter((like) => like !== req.user.id);
+
+        // Check if the user has already liked the post
+        const hasLiked = Post.likes.some(like => like.toString() === userId.toString());
+
+        if (hasLiked) {
+            // If liked, remove the like
+            Post.likes = Post.likes.filter(like => like.toString() !== userId.toString());
         } else {
-            Post.likes.push(req.user.id);
+            // If not liked, add the like
+            Post.likes.push(userId);
         }
+
         await Post.save();
-        res.status(200).json({ likes: post.likes });
+        res.status(200).json({ likes: Post.likes });
     } catch (error) {
         console.error('Error liking post:', error.message);
         res.status(500).json({ message: error.message });

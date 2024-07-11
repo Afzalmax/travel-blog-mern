@@ -7,6 +7,7 @@ import PostFeed from './components/PostFeed';
 import Navbar from './components/Navbar';
 import Profile from './components/Profile';
 import PostForm from './components/PostForm';
+import Footer from './components/Footer';
 
 const App = () => {
   const {token} = useStore();
@@ -25,7 +26,7 @@ const App = () => {
         <Route path='/profile' element={<Profile/>}/>
         <Route path='/addpost' element={<PostForm/>}/>
       </Routes>
-   
+    <Footer/>
     </>
   )
 }

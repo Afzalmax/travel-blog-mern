@@ -3,6 +3,8 @@ import {usePost} from '../hooks/usePost';
 import { useStore } from '../context/Store';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { FaHeart } from "react-icons/fa";
+
 const PostFeed = () => {
     const apiUrl = import.meta.env.VITE_API_URL
     const {user,logout} = useStore();
@@ -18,13 +20,14 @@ const PostFeed = () => {
     useEffect(() => {
        console.log(user)
         fetchPosts();
+        console.log(posts);
     }, []);
     const handleLike = async (postId) => {
       try{
       const response = await axios.post(apiUrl+'/api/post/like', { postId}, {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
       });
-     fetchPosts();
+    await  fetchPosts();
     }
     catch(error){
       console.log(error);
@@ -42,12 +45,8 @@ const PostFeed = () => {
   };
   return (
     <>
-    
+    <Link to='/addpost'>Create new post</Link>
             <h2 className='flex justify-center items-center text-3xl font-bold text-gray-900 dark:text-white'>Posts</h2>
-           
-            
-            
-            
             <div class="flex justify-center items-center px-4 py-3">
             {posts.length > 0 ? (<>
                 <ul>
@@ -65,7 +64,7 @@ const PostFeed = () => {
                             <img src={apiUrl+`/${post.image}`} alt={post.title} />
                             
                               <button onClick={() => handleLike(post._id)}>
-                                {post.likes.includes(user._id) ? 'Unlike' : 'Like'} {post.likes.length}
+                                {post.likes.some(like => like._id === user._id) ? <FaHeart className='text-red-500'/>:<FaHeart className='text-white'/>  } {post.likes.length}
                             </button>  
                             <h4 className='mt-3'>Comments</h4>
                             <input
@@ -103,15 +102,12 @@ const PostFeed = () => {
                         
                     ))}
                 </ul>
-                <Link to='/addpost'>Create new post</Link>
-                <button onClick={logout}>Logout</button>
+                
+                
                 </>
             ) : (
                 <>
                 <p>No posts yet</p>
-                
-                <Link to='/addpost'>Create new post</Link>
-                <button onClick={logout}>Logout</button>
                 </>
             )}
             </div>
