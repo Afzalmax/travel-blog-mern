@@ -26,7 +26,7 @@ const CreatePost = () => {
         <form onSubmit={handleSubmit}>
         <div class="sm:col-span-2">
                   <label for="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Post Title</label>
-                  <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Type product name" required=""/>
+                  <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Post title here" required=""/>
               </div>
             <div class="sm:col-span-2">
                   <label for="description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
@@ -41,8 +41,8 @@ const CreatePost = () => {
             /></div>
             
             <div className='flex justify-center items-center '>
-            <button className='mt-8 mx-3 flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' type="submit" >Create Post</button>
             <Link to='/'>
+            <button className='mt-8 mx-3 flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' type="submit" >Create Post</button>
             <button className='mt-8 flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>Cancel</button>
             </Link>
             </div>       

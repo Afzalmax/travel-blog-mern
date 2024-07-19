@@ -71,16 +71,24 @@ exports.getUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 }
+
+
 exports.getProfile = async (req, res) => {
     try {
+        // Fetch the user profile
         const userProfile = await User.findById(req.user.id);
         if (!userProfile) {
             return res.status(404).json({ message: 'User not found' });
         }
-        const userPosts = await post.find({ CreatedBy: req.user.id });
+
+        // Fetch user posts and populate the 'likes' and 'comments.user' fields
+        const userPosts = await post.find({ CreatedBy: req.user.id })
+            .populate('likes', 'username')
+            .populate('comments.user', 'username');
+
         res.status(200).json({ profile: userProfile, posts: userPosts });
     } catch (error) {
         console.error('Error getting profile:', error.message);
         res.status(500).json({ message: error.message });
     }
-}
+};
