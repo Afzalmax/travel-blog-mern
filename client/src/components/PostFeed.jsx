@@ -73,7 +73,7 @@ const PostFeed = () => {
                               <button  onClick={() => handleLike(post._id)}>
                                 {post.likes.some(like => like._id === user._id) ? <FaHeart className='text-xl text-red-500'/>:<IoIosHeartEmpty className='text-xl text-white-500' />  } {post.likes.length}
                             </button>  
-                            <button onClick={handleButtonClick}>
+                            <button onClick={() => handleButtonClick(post._id)}>
                             <LiaCommentSolid className='text-xl mb-7'/>
                     </button>
                     {showInput[post._id] && (
