@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { usePost } from '../hooks/usePost'; // Adjust the import path
-import {Link} from 'react-router-dom'
+import { usePost } from '../hooks/usePost'; 
+import {Link, useNavigate} from 'react-router-dom'
 const CreatePost = () => {
     const { post } = usePost();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (image) {
             const result = await post(title, description, image);
-            console.log(result);
+            navigate('/');
         } else {
             console.log("Image is required");
         }
@@ -41,8 +42,9 @@ const CreatePost = () => {
             /></div>
             
             <div className='flex justify-center items-center '>
-            <Link to='/'>
             <button className='mt-8 mx-3 flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' type="submit" >Create Post</button>
+            <Link to='/'>
+            
             <button className='mt-8 flex items-center justify-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'>Cancel</button>
             </Link>
             </div>       
