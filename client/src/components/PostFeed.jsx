@@ -9,13 +9,13 @@ import { CgProfile } from "react-icons/cg";
 
 const PostFeed = () => {
     const apiUrl = import.meta.env.VITE_API_URL
-    const {user,logout} = useStore();
+    const {user} = useStore();
     const [posts, setPosts] = useState([]);
     const [showLikes, setShowLikes] = useState({});
     const [showComments, setShowComments] = useState({});
     const {getPosts} = usePost();
     const [showInput, setShowInput] = useState({});
-    const handleButtonClick = () => {
+    const handleButtonClick = (postId) => {
         setShowInput(prev => ({ ...prev, [postId]: !prev[postId] }));
       };
     const fetchPosts = async () => {
